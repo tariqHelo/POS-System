@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLikesTable extends Migration
+class CreatePhotosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateLikesTable extends Migration
      */
     public function up()
     {
-        Schema::create('likes', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('post_id')->nullable()->constrained();
-            $table->foreignId('user_id')->nullable()->constrained();
+        Schema::create('photoable', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('filename');
+            $table->integer('photoable_id');
+            $table->string('photoable_type');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateLikesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('likes');
+        Schema::dropIfExists('photos');
     }
 }

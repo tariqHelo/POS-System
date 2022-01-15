@@ -4,18 +4,6 @@
 
 The project was created while recording video "Create POS System Using Laravel"
 
-## Installation
-
-### Requirements
-
-For system requirements you [Check Laravel Requirement](https://laravel.com/docs/8.x/deployment#server-requirements)
-
-### Clone the repository from github.
-
-    git clone https://github.com/angkosal/laravel-pos.git [YourDirectoryName]
-
-The command installs the project in a directory named `YourDirectoryName`. You can choose a different
-directory name if you want.
 
 ### Install dependencies
 
@@ -62,7 +50,7 @@ Rename or copy `.env.example` file to `.env` 1.`php artisan key:generate` to gen
 
 1. `php artisan serve` or Laravel Homestead
 1. Visit `localhost:8000` in your browser
-1. Visit `/admin` if you want to access the admin. Email: `admin@gmail.com`, Password: `admin`.
+1. Visit `/admin` if you want to access the admin. Email: `a@a.com`, Password: `admin`.
 
 ### Screenshots
 

@@ -49,8 +49,12 @@ class ProductController extends Controller
     {
         $image_path = '';
 
-        if ($request->hasFile('image')) {
-            $image_path = $request->file('image')->store('products', 'public');
+        if($request->hasFile('image')) {
+            $file = $request->file('image');
+             // UplodedFile Object
+            $image_path = $file->store('/', [
+                'disk' => 'uploads',
+            ]);
         }
 
         $product = Product::create([
@@ -107,13 +111,23 @@ class ProductController extends Controller
         $product->quantity = $request->quantity;
         $product->status = $request->status;
 
-        if ($request->hasFile('image')) {
-            // Delete old image
-            if ($product->image) {
-                Storage::delete($product->image);
-            }
-            // Store image
-            $image_path = $request->file('image')->store('products', 'public');
+        // if ($request->hasFile('image')) {
+        //     // Delete old image
+        //     if ($product->image) {
+        //         Storage::delete($product->image);
+        //     }
+        //     // Store image
+        //     $image_path = $request->file('image')->store('products', 'public');
+        //     // Save to Database
+        //     $product->image = $image_path;
+        // }
+
+        if($request->hasFile('image')) {
+            $file = $request->file('image');
+              // Store image
+            $image_path = $file->store('/', [
+                'disk' => 'uploads',
+            ]);
             // Save to Database
             $product->image = $image_path;
         }

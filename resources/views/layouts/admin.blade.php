@@ -17,7 +17,7 @@
     <script>
         window.APP = <?php echo json_encode([
             'currency_symbol' => config('settings.currency_symbol')
-]) ?>
+          ]) ?>
     </script>
 </head>
 

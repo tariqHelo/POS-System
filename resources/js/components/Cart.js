@@ -13,7 +13,7 @@ class Cart extends Component {
             customers: [],
             barcode: "",
             search: "",
-            customer_id: ""
+            customer_id: "",
         };
 
         this.loadCart = this.loadCart.bind(this);
@@ -26,7 +26,7 @@ class Cart extends Component {
         this.handleChangeSearch = this.handleChangeSearch.bind(this);
         this.handleSeach = this.handleSeach.bind(this);
         this.setCustomerId = this.setCustomerId.bind(this);
-        this.handleClickSubmit = this.handleClickSubmit.bind(this)
+        this.handleClickSubmit = this.handleClickSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -37,7 +37,8 @@ class Cart extends Component {
     }
 
     loadCustomers() {
-        axios.get(`/admin/customers`).then(res => {
+        axios.get(`/admin/customers`)
+          .then((res) => {
             const customers = res.data;
             this.setState({ customers });
         });
@@ -45,7 +46,8 @@ class Cart extends Component {
 
     loadProducts(search = "") {
         const query = !!search ? `?search=${search}` : "";
-        axios.get(`/admin/products${query}`).then(res => {
+        axios.get(`/admin/products${query}`)
+         .then((res) => {
             const products = res.data.data;
             this.setState({ products });
         });
@@ -58,7 +60,8 @@ class Cart extends Component {
     }
 
     loadCart() {
-        axios.get("/admin/cart").then(res => {
+        axios.get("/admin/cart")
+          .then((res) => {
             const cart = res.data;
             this.setState({ cart });
         });
@@ -70,17 +73,17 @@ class Cart extends Component {
         if (!!barcode) {
             axios
                 .post("/admin/cart", { barcode })
-                .then(res => {
+                 .then((res) => {
                     this.loadCart();
                     this.setState({ barcode: "" });
                 })
-                .catch(err => {
+                .catch((err) => {
                     Swal.fire("Error!", err.response.data.message, "error");
                 });
         }
     }
     handleChangeQty(product_id, qty) {
-        const cart = this.state.cart.map(c => {
+        const cart = this.state.cart.map((c) => {
             if (c.id === product_id) {
                 c.pivot.quantity = qty;
             }
@@ -91,26 +94,26 @@ class Cart extends Component {
 
         axios
             .post("/admin/cart/change-qty", { product_id, quantity: qty })
-            .then(res => {})
-            .catch(err => {
+            .then((res) => {})
+            .catch((err) => {
                 Swal.fire("Error!", err.response.data.message, "error");
             });
     }
 
     getTotal(cart) {
-        const total = cart.map(c => c.pivot.quantity * c.price);
+        const total = cart.map((c) => c.pivot.quantity * c.price);
         return sum(total).toFixed(2);
     }
     handleClickDelete(product_id) {
         axios
             .post("/admin/cart/delete", { product_id, _method: "DELETE" })
-            .then(res => {
-                const cart = this.state.cart.filter(c => c.id !== product_id);
+                .then((res) => {
+                const cart = this.state.cart.filter((c) => c.id !== product_id);
                 this.setState({ cart });
             });
     }
     handleEmptyCart() {
-        axios.post("/admin/cart/empty", { _method: "DELETE" }).then(res => {
+        axios.post("/admin/cart/empty", { _method: "DELETE" }).then((res) => {
             this.setState({ cart: [] });
         });
     }
@@ -125,12 +128,12 @@ class Cart extends Component {
     }
     addProductToCart(barcode) {
         axios
-            .post("/admin/cart", { barcode })
-            .then(res => {
+          .post("/admin/cart", { barcode })
+            .then((res) => {
                 this.loadCart();
                 this.setState({ barcode: "" });
             })
-            .catch(err => {
+            .catch((err) => {
                 Swal.fire("Error!", err.response.data.message, "error");
             });
     }
@@ -139,27 +142,32 @@ class Cart extends Component {
     }
     handleClickSubmit() {
         Swal.fire({
-            title: 'Received Amount',
-            input: 'text',
+            title: "Received Amount",
+            input: "text",
             inputValue: this.getTotal(this.state.cart),
             showCancelButton: true,
-            confirmButtonText: 'Send',
+            confirmButtonText: "Send",
             showLoaderOnConfirm: true,
             preConfirm: (amount) => {
-                return axios.post('/admin/orders', {customer_id: this.state.customer_id, amount}).then(res => {
-                    this.loadCart();
-                    return res.data;
-                }).catch(err => {
-                    Swal.showValidationMessage(err.response.data.message)
-                })
+                return axios
+                    .post("/admin/orders", {
+                        customer_id: this.state.customer_id,
+                        amount,
+                    })
+                    .then((res) => {
+                        this.loadCart();
+                        return res.data;
+                    })
+                    .catch((err) => {
+                        Swal.showValidationMessage(err.response.data.message);
+                    });
             },
-            allowOutsideClick: () => !Swal.isLoading()
+            allowOutsideClick: () => !Swal.isLoading(),
         }).then((result) => {
             if (result.value) {
                 //
             }
-        })
-
+        });
     }
     render() {
         const { cart, products, customers, barcode } = this.state;
@@ -182,9 +190,9 @@ class Cart extends Component {
                             <select
                                 className="form-control"
                                 onChange={this.setCustomerId}
-                            >
+                             >
                                 <option value="">Walking Customer</option>
-                                {customers.map(cus => (
+                                {customers.map((cus) => (
                                     <option
                                         key={cus.id}
                                         value={cus.id}
@@ -204,7 +212,7 @@ class Cart extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {cart.map(c => (
+                                    {cart.map((c) => (
                                         <tr key={c.id}>
                                             <td>{c.name}</td>
                                             <td>
@@ -212,7 +220,7 @@ class Cart extends Component {
                                                     type="text"
                                                     className="form-control form-control-sm qty"
                                                     value={c.pivot.quantity}
-                                                    onChange={event =>
+                                                    onChange={(event) =>
                                                         this.handleChangeQty(
                                                             c.id,
                                                             event.target.value
@@ -283,7 +291,7 @@ class Cart extends Component {
                         />
                     </div>
                     <div className="order-product">
-                        {products.map(p => (
+                        {products.map((p) => (
                             <div
                                 onClick={() => this.addProductToCart(p.barcode)}
                                 key={p.id}

@@ -19,6 +19,8 @@ class CartController extends Controller
 
     public function store(Request $request)
     {
+       // dd($request);
+
         $request->validate([
             'barcode' => 'required|exists:products,barcode',
         ]);
@@ -26,6 +28,7 @@ class CartController extends Controller
 
         $cart = $request->user()->cart()->where('barcode', $barcode)->first();
         if ($cart) {
+            dd(20);
             // update only quantity
             $cart->pivot->quantity = $cart->pivot->quantity + 1;
             $cart->pivot->save();

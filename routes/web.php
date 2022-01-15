@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\SettingController;
+use App\Http\Controllers\{
+    CartController,
+    CustomerController,
+    HomeController,
+    OrderController,
+    ProductController,
+    SettingController
+};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
